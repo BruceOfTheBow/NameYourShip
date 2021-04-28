@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ShipToShoreCam
 {
-    [BepInPlugin("fixingdeer.ShipToShoreCam", "Ship to Shore Cam", "1.2.1")]
+    [BepInPlugin("fixingdeer.ShipToShoreCam", "Ship to Shore Cam", "1.2.2")]
     [BepInProcess("valheim.exe")]
 
     public class ShipToShoreCam : BaseUnityPlugin
@@ -56,7 +56,6 @@ namespace ShipToShoreCam
             {
                 if (enableMod.Value)
                 {
-
                     var player = collider.GetComponent<Player>();
                     if (player && player == Player.m_localPlayer)
                     {
@@ -75,12 +74,10 @@ namespace ShipToShoreCam
             {
                 if (enableMod.Value)
                 {
-
                     if (changeZoom == "Enter Ship")
                     {
                         if (__instance.m_distance != enterShipZoom.Value)
                         {
-
                             //Verify valid minimum zoom level
                             if (enterShipZoom.Value < 1)
                                 enterShipZoom.Value = 1;
@@ -132,7 +129,6 @@ namespace ShipToShoreCam
                         }
                         else
                             if (showDebugMessages.Value) Debug.Log("Player off ship, no zoom change needed");
-
                     }
 
                     changeZoom = "";
