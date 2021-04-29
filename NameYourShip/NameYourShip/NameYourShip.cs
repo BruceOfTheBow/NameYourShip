@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace NameYourShip
 {
-    [BepInPlugin("fixingdeer.NameYourShip", "NameYourShip", "0.5.3")]
+    [BepInPlugin("fixingdeer.NameYourShip", "NameYourShip", "0.5.4")]
     [BepInProcess("valheim.exe")]
 
     public class NameYourShip : BaseUnityPlugin
@@ -24,9 +24,12 @@ namespace NameYourShip
         public static ConfigEntry<string> fontName;
         public static ConfigEntry<int> fontSize;
         public static ConfigEntry<string> fontColor;
-        public static ConfigEntry<string> nameLocationLongship;
-        public static ConfigEntry<string> nameLocationKarve;
-        public static ConfigEntry<string> nameLocationRaft;
+        //public static ConfigEntry<string> nameLocationLongship;
+        //public static ConfigEntry<string> nameLocationKarve;
+        //public static ConfigEntry<string> nameLocationRaft;
+        public static ConfigEntry<Vector3> nameLocationLongship;
+        public static ConfigEntry<Vector3> nameLocationKarve;
+        public static ConfigEntry<Vector3> nameLocationRaft;
         public static ConfigEntry<float> distanceViewable;
         public static ConfigEntry<bool> fadeName;
         public static ConfigEntry<bool> scaleName;
@@ -58,9 +61,12 @@ namespace NameYourShip
             fontName = Config.Bind<string>("Ship Name Configuration", "fontName", "Norsebold", "Font to use when displaying the ship's name (must be a font included in the game resources)");
             fontSize = Config.Bind<int>("Ship Name Configuration", "fontSize", 48, "Font size to use when displaying the ship's name");
             fontColor = Config.Bind<string>("Ship Name Configuration", "fontColor", "#FFFFFFFF", "RGBA Font color to use when displaying the ship's name");
-            nameLocationLongship = Config.Bind<string>("Ship Name Configuration", "nameLocationLongship", "0, 600, 0", "The location to display the ship's name on a Longship, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
-            nameLocationKarve = Config.Bind<string>("Ship Name Configuration", "nameLocationKarve", "0, 600, 0", "The location to display the ship's name on a Karve, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
-            nameLocationRaft = Config.Bind<string>("Ship Name Configuration", "nameLocationRaft", "0, 200, 0", "The location to display the ship's name on a Raft, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            //nameLocationLongship = Config.Bind<string>("Ship Name Configuration", "nameLocationLongship", "0, 600, 0", "The location to display the ship's name on a Longship, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            //nameLocationKarve = Config.Bind<string>("Ship Name Configuration", "nameLocationKarve", "0, 600, 0", "The location to display the ship's name on a Karve, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            //nameLocationRaft = Config.Bind<string>("Ship Name Configuration", "nameLocationRaft", "0, 200, 0", "The location to display the ship's name on a Raft, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            nameLocationLongship = Config.Bind<Vector3>("Ship Name Configuration", "nameLocationLongship", new Vector3(0, 600, 0), "The location to display the ship's name on a Longship, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            nameLocationKarve = Config.Bind<Vector3>("Ship Name Configuration", "nameLocationKarve", new Vector3(0, 600, 0), "The location to display the ship's name on a Karve, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
+            nameLocationRaft = Config.Bind<Vector3>("Ship Name Configuration", "nameLocationRaft", new Vector3(0, 200, 0), "The location to display the ship's name on a Raft, in relation to the ship's 0, 0, 0 point (must include x, y, z values)");
             distanceViewable = Config.Bind<float>("Ship Name Configuration", "distanceViewable", 30, "How far away should you be able to see the name?");
             fadeName = Config.Bind<bool>("Ship Name Configuration", "fadeName", true, "Should the name fade out or just disappear all at once?");
             scaleName = Config.Bind<bool>("Ship Name Configuration", "scaleName", false, "Should the name get smaller as you get further away?");
@@ -98,28 +104,28 @@ namespace NameYourShip
         }
     }
 
-    public static class Vector3Extensions
-    {
-        public static Vector3 StringToVector3(string sVector)
-        {
-            // Remove the parentheses
-            if (sVector.StartsWith("(") && sVector.EndsWith(")"))
-            {
-                sVector = sVector.Substring(1, sVector.Length - 2);
-            }
+    //public static class Vector3Extensions
+    //{
+    //    public static Vector3 StringToVector3(string sVector)
+    //    {
+    //        // Remove the parentheses
+    //        if (sVector.StartsWith("(") && sVector.EndsWith(")"))
+    //        {
+    //            sVector = sVector.Substring(1, sVector.Length - 2);
+    //        }
 
-            // split the items
-            string[] sArray = sVector.Split(',');
+    //        // split the items
+    //        string[] sArray = sVector.Split(',');
 
-            // store as a Vector3
-            Vector3 result = new Vector3(
-                float.Parse(sArray[0]),
-                float.Parse(sArray[1]),
-                float.Parse(sArray[2]));
+    //        // store as a Vector3
+    //        Vector3 result = new Vector3(
+    //            float.Parse(sArray[0]),
+    //            float.Parse(sArray[1]),
+    //            float.Parse(sArray[2]));
 
-            return result;
-        }
-    }
+    //        return result;
+    //    }
+    //}
 
     public class ShipName : MonoBehaviour
     {
@@ -197,10 +203,12 @@ namespace NameYourShip
 
         void Update()
         {
+            if (!Player.m_localPlayer) return;
+
             float distance = (gameObject.transform.position - Camera.main.transform.position).magnitude;
             float distanceViewable = NameYourShip.distanceViewable.Value;
-
-            string nameLocation = "0,0,0";
+            //string nameLocation = "0,0,0";
+            Vector3 nameLocation = new Vector3(0, 0, 0);
 
             if (gameObject.transform.parent.gameObject.transform.parent.gameObject.name.Contains("VikingShip"))
             {
@@ -236,7 +244,8 @@ namespace NameYourShip
                     SetAlpha(alpha);
                 }
 
-                Vector3 offset = Vector3Extensions.StringToVector3(nameLocation);
+                //Vector3 offset = Vector3Extensions.StringToVector3(nameLocation);
+                Vector3 offset = nameLocation;
                 Vector3 shipNamePos = Camera.main.WorldToScreenPoint(gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.position);
 
                 float distanceFactor = distanceViewable * (1 - (distance / distanceViewable));
@@ -245,7 +254,6 @@ namespace NameYourShip
                 float distancePct = Mathf.Clamp(distance / distanceViewable, 0, 0.6f);
                 shipNameText.transform.rotation = gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.rotation;
                 shipNameText.transform.position = shipNamePos + new Vector3(offset.x, offset.y - (offset.y * distancePct), offset.z);
-                //shipNameText.transform.position = shipNamePos + offset;
 
                 if (NameYourShip.scaleName.Value)
                     shipNameText.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
@@ -276,6 +284,7 @@ namespace NameYourShip
                 }
             }
         }
+
 
         public void SetAlpha(float alpha)
         {
