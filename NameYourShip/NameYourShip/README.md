@@ -1,4 +1,4 @@
-# Comfy Armor and Quick Slots
+# Comfy Name Your Ship
 
 ## Installation
 
@@ -26,7 +26,7 @@
 ## Notes
 
   * Fixed version post H&H of FixingDeer's NameYourShip mod. See source at:[GitHub](https://github.com/FixingDeer/ValheimMods/tree/main/NameYourShip).
-  * See source at: [GitHub](https://github.com/BruceOfTheBow/ComfyArmorAndQuickSlots).
+  * See source at: [GitHub](https://github.com/BruceOfTheBow/NameYourShip/tree/main/NameYourShip/NameYourShip).
   * Looking for a chill Valheim server? [Comfy Valheim Discord](https://discord.gg/ameHJz5PFk)
   * Check out our community driven listing site at: [valheimlist.org](https://valheimlist.org/)
 
