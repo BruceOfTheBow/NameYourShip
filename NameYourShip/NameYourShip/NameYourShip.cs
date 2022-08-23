@@ -401,22 +401,6 @@ namespace NameYourShip
 
             return "Test Text";
         }
-
-        public bool Interact(Humanoid character, bool hold)
-        {
-            if (!NameYourShip.instance.AllowInput()) return false;
-            if (hold)
-            {
-                return false;
-            }
-            if (!PrivateArea.CheckAccess(transform.position, 0f, true))
-            {
-                return false;
-            }
-            TextInput.instance.RequestText(this, "$piece_sign_input", m_characterLimit);
-            return true;
-        }
-
         private void UpdateText()
         {
             string text = GetText();
@@ -465,6 +449,18 @@ namespace NameYourShip
         void Update()
         {
             this.transform.position = gameObject.transform.position;
+        }
+
+        bool Interactable.Interact(Humanoid user, bool hold, bool alt) {
+            if (!NameYourShip.instance.AllowInput()) return false;
+            if (hold) {
+                return false;
+            }
+            if (!PrivateArea.CheckAccess(transform.position, 0f, true)) {
+                return false;
+            }
+            TextInput.instance.RequestText(this, "$piece_sign_input", m_characterLimit);
+            return true;
         }
     }
 }
