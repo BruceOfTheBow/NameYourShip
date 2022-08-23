@@ -8,15 +8,19 @@ using UnityEngine.UI;
 
 namespace NameYourShip
 {
-    [BepInPlugin("fixingdeer.NameYourShip", "NameYourShip", "0.5.4")]
+    [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     [BepInProcess("valheim.exe")]
 
     public class NameYourShip : BaseUnityPlugin
     {
+        public const string PluginGuid = "bruceofthebow.valheim.ComfyNameYourShip";
+        public const string PluginName = "ComfyNameYourShip";
+        public const string PluginVersion = "1.0.0";
+
         //Change to false to stop logging
         public static bool debug = false;
 
-        private readonly Harmony harmony = new Harmony("fixingdeer.NameYourShip");
+        private readonly Harmony harmony = new Harmony("bruceofthebow.valheim.ComfyNameYourShip");
         public static ConfigEntry<bool> modEnabled;
         public static ConfigEntry<bool> requireKeyConfig;
         public static ConfigEntry<string> keyConfig;

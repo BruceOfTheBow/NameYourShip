@@ -1,0 +1,8 @@
+{
+    "name": "ComfyNameYourShip",
+    "version_number": "1.0.0",
+    "author": "ComfyMods",
+    "description": "Fixed version of FixingDeer's NameYourShip mod after H&H changes.",
+    "website_url": "https://github.com/BruceOfTheBow/NameYourShip",
+    "dependencies": [ "denikson-BepInExPack_Valheim-5.4.1901" ]
+}
